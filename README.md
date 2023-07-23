@@ -1,18 +1,18 @@
 # casperwm | a simple x11 window manager
 
-## note
+### note
 this simple window manager has only what i need, mainly because
 i made this thing for myself so **there is not a lot of 
 features or customizability**
 
-## features
+### features
 - vertical split 
 - autostart
 - workspaces
 - some keybindings (open terminal/kill windows/switch workspaces)
 - and **nothing else**
 
-## config
+### config
 hope you know a bit of c, otherwise you won't get to far with this 
 wm
 
@@ -62,7 +62,7 @@ void startup(){
 }
 ```
 
-# compile
+### compile
 after adding your config files you, can compile casperwm by running:
 ```bash
 make
@@ -70,14 +70,14 @@ make
 note that on debian based systems you will need `libx11-dev` in order to
 compile
 
-# install
+### install
 following command will copy the build to `/usr/bin` and it will add an entry to the
 `/usr/share/xsessions` so you can launch the wm from your display manager:
 ```
 sudo make install
 ```
 
-# advanced stuff
+### advanced stuff
 feel free to play around with the code and break things, here is simple breakdown of all the files:
 - `capser.c`: contains the main function, waits for XEvents and calls XEvent handler functions from `event.c`
 - `event.c`: has all the handler functions, these functions handle different XEvents such as `MapRequest`, `CreateNotify` etc. Also contains the `resize` function that resisez all the windows when called
