@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=casperwm
+Comment=A simple window manager
+TryExec=casperwm
+Exec=casperwm
+Type=Application
