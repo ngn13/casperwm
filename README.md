@@ -85,6 +85,15 @@ following command will copy the build to `/usr/bin` and it will add an entry to 
 sudo make install
 ```
 
+### bindings
+all bindings start with the master key:
+- `q`: exit the wm
+- `c`: close active window
+- `1`...`WORKSPACE_COUNT`: move to workspace
+- `enter`: open a terminal
+- `p`: start the launcher
+- left click on window: activate the window
+
 ### advanced stuff
 feel free to play around with the code and break things, here is simple breakdown of all the files:
 - `capser.c`: contains the main function, waits for XEvents and calls XEvent handler functions from `event.c`
