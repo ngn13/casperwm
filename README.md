@@ -13,7 +13,7 @@ features or customizability**
 - and **nothing else**
 
 ### config
-hope you know a bit of c, otherwise you won't get to far with this 
+hope you know a bit of c, otherwise you won't get too far with this 
 wm
 
 for a simple config, create two file in `src` directory: `config.h` and `config.c`
