@@ -24,23 +24,31 @@ here is a simple `config.h` that you can copy paste:
 // #############################################
 
 // YOUR CONFIGURATION HERE!!
-#define WORKSPACE_COUNT 8 // this will get you 8 seperate workspaces 
 
-#define MARGIN_TOP 50 // top margin, to give your BAR some space
+// this will get you 8 seperate workspaces
+#define WORKSPACE_COUNT 8
+
+// top margin, to give your BAR some space
 // if your bar is on the bottom set to this to a negative number
+#define MARGIN_TOP 50
 
-#define MARGIN 25 // the window margins, does not effect BAR
+// the window margins, does not effect BAR
+#define MARGIN 25
 
-#define MOD Mod4Mask // the key that have a logo on it, 
+// the key that have a logo on it, 
 // also known as the "windows" key this will be your master key,
 // you will use it as a prefix before all the other bindings
+#define MOD Mod4Mask
 
-#define BAR "polybar" // name of your bar program, you can check 
+// name of your bar program, you can check 
 // its name with xprop
+#define BAR "polybar"
 
-#define TERMINAL "kitty" // terminal command 
+// terminal command 
+#define TERMINAL "kitty" 
 
-#define LAUNCHER "dmenu_run" // launcher command
+// launcher command
+#define LAUNCHER "dmenu_run" 
 
 void startup(); // just a definition, see config.c
 
