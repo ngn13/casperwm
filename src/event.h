@@ -8,13 +8,14 @@
 #include <stdio.h>
 #include "wm.h"
 
-void event_create(struct WM* wm, XCreateWindowEvent e);
+void event_create(struct WM*, XCreateWindowEvent);
 void event_config(struct WM*, XConfigureRequestEvent);
+void map(struct WM*, Window);
 void event_map(struct WM*, XMapRequestEvent);
-void event_unmap(struct WM* wm, XUnmapEvent e);
-void event_destroy(struct WM* wm, XDestroyWindowEvent e);
-void event_key(struct WM* wm, XKeyEvent e);
-void event_button(struct WM* wm, XButtonEvent e);
+void event_unmap(struct WM*, XUnmapEvent);
+void event_destroy(struct WM*, XDestroyWindowEvent);
+void event_key(struct WM*, XKeyEvent);
+void event_button(struct WM*, XButtonEvent);
 
 // #################################
 #endif 

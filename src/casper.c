@@ -13,10 +13,9 @@
 #include "wm.h"
 
 struct WM wm = {
-  .max_workspace = WORKSPACE_COUNT,
   .wm_found = false, 
-  .current_workspace = 1,
-  .active = -1
+  .current_workspace = 0,
+  .active = -1, 
 };
 
 int handler(Display* d, XErrorEvent* e){
@@ -69,11 +68,14 @@ int loop(){
 
 void finish(){
   XCloseDisplay(wm.d);
+  for(int i = 1; i<=WORKSPACE_COUNT; i++){
+    free(wm.workspaces[i].clients);
+  }
+  free(wm.workspaces);
   success("Closed the display");
 }
 
 int main(){
-  wm.clients = malloc(100*sizeof(struct Client));
   wm.d = XOpenDisplay(NULL);
 
   if(wm.d==NULL){
@@ -88,39 +90,50 @@ int main(){
       wm.r,
       SubstructureRedirectMask | SubstructureNotifyMask);
   XSync(wm.d, false);
+
   if (wm.wm_found){
     error("There is already a running window manager");
-    finish();
+    XCloseDisplay(wm.d);
     return EXIT_FAILURE;
   }
 
   success("Created display");
-  XGrabKey(wm.d, XKeysymToKeycode(wm.d, XStringToKeysym("Return")), MOD, wm.r, True, GrabModeAsync, GrabModeAsync);
-  XGrabKey(wm.d, XKeysymToKeycode(wm.d, XStringToKeysym("p")), MOD, wm.r, True, GrabModeAsync, GrabModeAsync);
   XGrabKey(wm.d, XKeysymToKeycode(wm.d, XStringToKeysym("c")), MOD, wm.r, True, GrabModeAsync, GrabModeAsync);
   XGrabKey(wm.d, XKeysymToKeycode(wm.d, XStringToKeysym("q")), MOD, wm.r, True, GrabModeAsync, GrabModeAsync);
-  for(int i = 1; i<=wm.max_workspace; i++){
-    char key[10];
-    sprintf(key, "%d", i);
-    XGrabKey(wm.d, XKeysymToKeycode(wm.d, XStringToKeysym(key)), MOD, wm.r, True, GrabModeAsync, GrabModeAsync);
-  }
-  XGrabButton(wm.d, 1, MOD, wm.r, True,
-            ButtonPressMask|ButtonReleaseMask|PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None);
+  XGrabKey(wm.d, XKeysymToKeycode(wm.d, XStringToKeysym("Return")), MOD, wm.r, True, GrabModeAsync, GrabModeAsync);
+  XGrabKey(wm.d, XKeysymToKeycode(wm.d, XStringToKeysym("n")), MOD, wm.r, True, GrabModeAsync, GrabModeAsync);
+  XGrabKey(wm.d, XKeysymToKeycode(wm.d, XStringToKeysym("p")), MOD, wm.r, True, GrabModeAsync, GrabModeAsync);
+  XGrabButton(wm.d, 1, AnyModifier, wm.r, True,
+            ButtonPressMask, GrabModeSync, GrabModeAsync, None, None);
 
-  info("Entering event loop");
+  wm.workspaces = malloc(sizeof(struct Workspace)*WORKSPACE_COUNT);
+  for(int i = 0; i<=WORKSPACE_COUNT; i++){
+    char key[10];
+    sprintf(key, "%d", i+1);
+    XGrabKey(wm.d, XKeysymToKeycode(wm.d, XStringToKeysym(key)), MOD, wm.r, True, GrabModeAsync, GrabModeAsync);
+
+    struct Workspace workspace;
+    workspace.clients = malloc(sizeof(struct Client)*100);
+    workspace.layout = 0;
+    wm.workspaces[i] = workspace;
+  }
+
+  info("Running startup fork");
   pid_t pid = fork();
   if(pid == 0){
     daemon(0,0);
     startup();
     exit(0);
   }
+
+  info("Entering event loop");
   while (true) {
     int code = loop();
     if (code==-1)
       break;
   }
-  finish();
 
-  free(wm.clients);
+  info("Cleaning up");
+  finish();
   return EXIT_SUCCESS;
 }
