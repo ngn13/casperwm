@@ -1,5 +1,7 @@
 #include "log.h"
+#include "config.h"
 #include <stdlib.h>
+#include <stdbool.h>
 
 void out(const char* tag, const char* m){
    time_t now;
@@ -23,4 +25,10 @@ void success(const char* m){
 void error(const char* m){
   out("ERROR  ", m);
   //exit(EXIT_FAILURE);
+}
+
+void debug(const char* m){
+  if(DEBUG){
+    out("DEBUG  ", m);
+  }
 }

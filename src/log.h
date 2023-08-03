@@ -9,6 +9,7 @@
 
 void info(const char*);
 void error(const char* m);
+void debug(const char* m);
 void success(const char* m);
 void out(const char*, const char*);
 

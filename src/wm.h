@@ -9,6 +9,7 @@
 
 #define DEAD 69
 #define ALIVE 420
+#define ZOMBIE 31
 
 struct Client{
   Window w;
@@ -26,6 +27,7 @@ struct WM {
   int max_workspace;
   Window bar;
   Window active;
+  bool quit;
 };
 
 // #################################
