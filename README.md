@@ -25,6 +25,9 @@ here is a simple `config.h` that you can copy paste:
 
 // YOUR CONFIGURATION HERE!!
 
+// set to "true" if you want to see the debug outputs
+#define DEBUG false
+
 // this will get you 8 seperate workspaces
 #define WORKSPACE_COUNT 8
 
@@ -65,6 +68,7 @@ and here is the `config.c`:
 // the background
 void startup(){  
   // here you can startup your bar, your wallpaper browser etc.
+  // and yes you need to add the "&"
   system("nitrogen --restore &");
   system("polybar");
 }
@@ -81,7 +85,7 @@ compile
 ### install
 following command will copy the build to `/usr/bin` and it will add an entry to the
 `/usr/share/xsessions` so you can launch the wm from your display manager:
-```
+```bash
 sudo make install
 ```
 
@@ -92,14 +96,16 @@ all bindings start with the master key:
 - `1`...`WORKSPACE_COUNT`: move to workspace
 - `enter`: open a terminal
 - `p`: start the launcher
-- left click on window: activate the window
+
+also left click on window to activate the window (does not require master key)
 
 ### advanced stuff
 feel free to play around with the code and break things, here is simple breakdown of all the files:
 - `capser.c`: contains the main function, waits for XEvents and calls XEvent handler functions from `event.c`
-- `event.c`: has all the handler functions, these functions handle different XEvents such as `MapRequest`, `CreateNotify` etc. Also contains the `resize` function that resisez all the windows when called
+- `event.c`: has all the handler functions, these functions handle different XEvents such as `MapRequest`, `CreateNotify` etc. 
+- `render.c`: contains the `resize` function that resisez all the windows when called, also contains the map and unmap functions
 - `log.c`: a simple wrapper around `printf`, provides the logging functions used in `event.c` and `casper.c`
 - `wm.h`: Contains definitions for the `WM` and the `Client` struct
 
-Note that **I am not an expert Xlib developer**, I learned xlib along the way, so this code may look bad to an
+note that **I am not an expert Xlib developer**, I learned xlib along the way, so this code may look bad to an
 expert xlib dev (and it probably is)
