@@ -1,0 +1,5 @@
+[general]
+workspaces = 9
+border = true
+margin = 10
+mod = Mod4
