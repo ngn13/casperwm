@@ -12,4 +12,6 @@ struct EventMapping {
 
 int error_handler(Display* dp, XErrorEvent* err);
 bool key_handler(XEvent event);
-bool btn_handler(XEvent event);
+bool map_handler(XEvent event);
+bool destroy_handler(XEvent event);
+bool unmap_handler(XEvent event);

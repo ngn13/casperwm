@@ -1,5 +1,6 @@
 #pragma once
 
+#include <X11/X.h>
 #include <ini.h>
 #include <pwd.h>
 #include <unistd.h>
@@ -12,6 +13,7 @@
 
 struct Binding {
   char* key;
+  KeyCode code;
   char* action;
   char* argument;
 };
@@ -19,6 +21,7 @@ struct Binding {
 struct Config {
   bool debug;
   char* mod;
+  char* bar;
   bool border;
   int margin;
   int workspaces;

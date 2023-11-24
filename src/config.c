@@ -1,5 +1,4 @@
 #include <ini.h>
-#include <pwd.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
@@ -10,7 +9,8 @@
 #include "util.h"
 
 struct Config cfg = {
-  .debug = false
+  .debug = false,
+  .bar = ""
 };
 char* last_section = "";
 
@@ -41,6 +41,11 @@ static int parse_handler(void* idk, const char* section, const char* key, const 
 
   if(MATCH("general", "workspaces")) {
     cfg.workspaces = atoi(value);
+    return 1;
+  }
+
+  if(MATCH("general", "bar")) {
+    cfg.bar = strdup(value);
     return 1;
   }
 
@@ -88,8 +93,7 @@ void free_cfg() {
 
 // parses the ini config file
 bool parse_cfg() {
-  struct passwd* pw = getpwuid(getuid());
-  char* homedir = pw->pw_dir;
+  char* homedir = get_homedir();
 
   char cfg_path[strlen(homedir)+200];
   join(homedir, ".config/casperwm/config", cfg_path);

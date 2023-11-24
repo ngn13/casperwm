@@ -7,6 +7,8 @@ install:
 	cp install/casperwm.desktop /usr/share/xsessions/casperwm.desktop
 	mkdir -p ~/.config/casperwm/
 	cp install/config.default ~/.config/casperwm/config 
+	cp install/start ~/.config/casperwm/start 
+	chown +x ~/.config/casperwm/start
 	chown -R $USER:$USER ~/.config/casperwm
 
 uninstall:
