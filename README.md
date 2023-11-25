@@ -1,13 +1,12 @@
-# casperwm | just a simple window manager
-casperwm is just a simple X11 window manager that I wrote for fun
+# casperwm | just a simple x11 window manager
+![](assets/casperwm.png)
+
+---
 
 ### features
 - vertical split
 - window borders
-- simple float mode
-
-<img src="assets/casperwm.png">
-
+- simple float mode 
 - workspaces
 - autostart
 - simple config
