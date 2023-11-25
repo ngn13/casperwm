@@ -23,7 +23,7 @@ int error_handler(Display* dp, XErrorEvent* err) {
 bool bind_handler(struct Binding b) {
   #define ACTION(b, a) strcmp(b.action, a)==0
 
-  if(ACTION(b, "cmd")) {
+  if(ACTION(b, "launch")) {
     wordexp_t words;
     wordexp(b.argument, &words, 0);
     
@@ -43,8 +43,19 @@ bool bind_handler(struct Binding b) {
     close_active();
   }else if(ACTION(b, "focus")) {
     focus_next_window();
+  }else if(ACTION(b, "workspace")) {
+    int workspace_number = atoi(b.argument);
+    change_workspace(workspace_number); 
+  }else if(ACTION(b, "send")) {
+    int workspace_number = atoi(b.argument);
+    move_workspace(workspace_number);
+  }else if(ACTION(b, "float")) {
+    toggle_float();
+  }else if(ACTION(b, "resize")) {
+    resize_window(b.argument);
+  }else if(ACTION(b, "move")) {
+    move_window(b.argument);
   }
-
   return true;
 }
 
@@ -53,6 +64,12 @@ bool key_handler(XEvent event){
 
   for(int i = 0; i < cfg.binding_count; i++) {
     if(cfg.bindings[i].code == e.keycode) {
+      if(!cfg.bindings[i].has_mod && e.state != wm.mod){
+        continue;
+      }else if(cfg.bindings[i].has_mod && e.state == wm.mod) {
+        continue;
+      }
+
       bind_handler(cfg.bindings[i]);
     }
   }

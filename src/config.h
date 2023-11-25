@@ -14,6 +14,11 @@
 struct Binding {
   char* key;
   KeyCode code;
+  
+  char* mod;
+  bool has_mod;
+  int modc;
+
   char* action;
   char* argument;
 };
@@ -22,7 +27,12 @@ struct Config {
   bool debug;
   char* mod;
   char* bar;
-  bool border;
+  int float_step;
+
+  char* border_active;
+  char* border_inactive;
+  int border_width;
+
   int margin;
   int workspaces;
   int binding_count;

@@ -8,4 +8,5 @@ struct ModMapping {
   int key;
 };
 
-int mod_resolver(char* mod);
+int mod_resolver(char*);
+unsigned long color_resolver(char*);

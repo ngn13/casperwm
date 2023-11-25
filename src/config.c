@@ -10,7 +10,11 @@
 
 struct Config cfg = {
   .debug = false,
-  .bar = ""
+  .bar = "",
+  .border_active = "",
+  .border_inactive = "",
+  .border_width = 0,
+  .float_step = 10,
 };
 char* last_section = "";
 
@@ -29,8 +33,18 @@ static int parse_handler(void* idk, const char* section, const char* key, const 
     return 1;
   }
 
-  if(MATCH("general", "border")) {
-    cfg.border = stb(value);
+  if(MATCH("general", "border_active")) {
+    cfg.border_active = strdup(value);
+    return 1;
+  }
+ 
+  if(MATCH("general", "border_inactive")) {
+    cfg.border_inactive = strdup(value);
+    return 1;
+  }
+ 
+  if(MATCH("general", "border_width")) {
+    cfg.border_width = atoi(value);
     return 1;
   }
 
@@ -41,6 +55,11 @@ static int parse_handler(void* idk, const char* section, const char* key, const 
 
   if(MATCH("general", "workspaces")) {
     cfg.workspaces = atoi(value);
+    return 1;
+  }
+
+  if(MATCH("general", "float_step")) {
+    cfg.float_step = atoi(value);
     return 1;
   }
 
@@ -58,6 +77,7 @@ static int parse_handler(void* idk, const char* section, const char* key, const 
     last_section = strdup(section);
     cfg.binding_count++;
     cfg.bindings = realloc(cfg.bindings, sizeof(struct Binding)*cfg.binding_count);
+    cfg.bindings[cfg.binding_count-1].has_mod = false;
   } 
 
   if(strlen(last_section) == 0) {
@@ -71,6 +91,12 @@ static int parse_handler(void* idk, const char* section, const char* key, const 
 
   if(MATCHKEY("action")) {
     cfg.bindings[cfg.binding_count-1].action = strdup(value);
+    return 1;
+  }
+
+  if(MATCHKEY("mod")) {
+    cfg.bindings[cfg.binding_count-1].mod = strdup(value);
+    cfg.bindings[cfg.binding_count-1].has_mod = true;
     return 1;
   }
 
