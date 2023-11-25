@@ -1,111 +1,66 @@
-# casperwm | a simple x11 window manager
+# casperwm | just a simple x11 window manager
+![](assets/casperwm.png)
 
-### note
-this simple window manager has only what i need, mainly because
-i made this thing for myself so **there is not a lot of 
-features or customizability**
+---
 
 ### features
-- vertical split 
-- autostart
+- vertical split
+- window borders
+- simple float mode 
 - workspaces
-- some keybindings (open terminal/kill windows/switch workspaces)
-- and **nothing else**
+- autostart
+- simple config
 
-### config
-hope you know a bit of c, otherwise you won't get too far with this 
-wm
+### build & install
+to compile casperwm, you will ned `libx11`, `libinih`, `gcc` and `make`, which you can 
+install with your package manager 
 
-for a simple config, create two file in `src` directory: `config.h` and `config.c`
-here is a simple `config.h` that you can copy paste:
-```c
-#ifndef CONFIG_H
-#define CONFIG_H
-// #############################################
-
-// YOUR CONFIGURATION HERE!!
-
-// set to "true" if you want to see the debug outputs
-#define DEBUG false
-
-// this will get you 8 seperate workspaces
-#define WORKSPACE_COUNT 8
-
-// top margin, to give your BAR some space
-// if your bar is on the bottom set to this to a negative number
-#define MARGIN_TOP 50
-
-// the window margins, does not effect BAR
-#define MARGIN 25
-
-// the key that have a logo on it, 
-// also known as the "windows" key this will be your master key,
-// you will use it as a prefix before all the other bindings
-#define MOD Mod4Mask
-
-// name of your bar program, you can check 
-// its name with xprop
-#define BAR "polybar"
-
-// terminal command 
-#define TERMINAL "kitty" 
-
-// launcher command
-#define LAUNCHER "dmenu_run" 
-
-void startup(); // just a definition, see config.c
-
-// #############################################
-#endif
-```
-and here is the `config.c`:
-```c
-#include "config.h"
-#include <stdlib.h>
- 
-// startup will be when the window manager starts,
-// wm will fork this function and it will run in 
-// the background
-void startup(){  
-  // here you can startup your bar, your wallpaper browser etc.
-  // and yes you need to add the "&"
-  system("nitrogen --restore &");
-  system("polybar");
-}
-```
-
-### compile
-after adding your config files you, can compile casperwm by running:
+then you can clone the repository and build it with `make`: 
 ```bash
-make
-```
-note that on debian based systems you will need `libx11-dev` in order to
-compile
-
-### install
-following command will copy the build to `/usr/bin` and it will add an entry to the
-`/usr/share/xsessions` so you can launch the wm from your display manager:
-```bash
+git clone https://github.com/ngn13/casperwm.git
+cd casperwm && make
 sudo make install
 ```
+after that you can run casperwm using your favorite display manager or with the `.xinitrc`
+script
 
-### bindings
-all bindings start with the master key:
-- `q`: exit the wm
-- `c`: close active window
-- `1`...`WORKSPACE_COUNT`: move to workspace
-- `enter`: open a terminal
-- `p`: start the launcher
+### start script
+casperwm runs a startup script on start, this script can be found at `~/.config/casperwm/start`
+you can edit this script or you can replace it with any executable script/binary
 
-also left click on window to activate the window (does not require master key)
+### config
+configuration file uses the `.INI` format and it can be found at `~/.config/casperwm/config`
+after the installation (it contains comments so you can understand most of the options by reading them)
 
-### advanced stuff
-feel free to play around with the code and break things, here is simple breakdown of all the files:
-- `capser.c`: contains the main function, waits for XEvents and calls XEvent handler functions from `event.c`
-- `event.c`: has all the handler functions, these functions handle different XEvents such as `MapRequest`, `CreateNotify` etc. 
-- `render.c`: contains the `resize` function that resisez all the windows when called, also contains the map and unmap functions
-- `log.c`: a simple wrapper around `printf`, provides the logging functions used in `event.c` and `casper.c`
-- `wm.h`: Contains definitions for the `WM` and the `Client` struct
+config contains two main sections: 
+- `[general]`: this section contains all general wm options
+- `[bind...]`: any section that starts with `bind` contains key bindings, you can name the 
+section whatever you want, as long as section name starts with `bind`, casperwm will 
+load that section as key binding 
 
-note that **I am not an expert Xlib developer**, I learned xlib along the way, so this code may look bad to an
-expert xlib dev (and it probably is)
+key bindings contain 4 different options:
+- `key`: actual key to bind 
+- `mod`: mod needed by this binding, dont add `mod` to your binding if you just want to use the master 
+mod defined in `[general]` section 
+- `action`: action that this binding triggers
+- `argument`: argument for the action
+
+all the actions are listed below:
+- `launch`: launches the program specified with the `argument`
+- `close`: closes the active window 
+- `quit`: quits the window manager 
+- `focus`: changes focus to the next window 
+- `workspace`: changes workspace to the workspace specified with the `argument`
+- `send`: sends window to the workspace specified with the `argument`
+- `float`: takes active window to the float mode 
+- `resize`: resizes active float window according to the `argument`, avaliable arguments are:
+`shrink_left`, `shrink_down`, `shrink`, `grow_left`, `grow_down` and `grow` 
+- `move`: moves the active float window according to the `argument`, avaliable arguments are:
+`left`, `right`, `up` and `down` 
+
+
+### issues/pull requests
+if you are having problems with the wm, enable debug mode in the config and redirect output to a 
+file, obtain the related output from this file and create an issue explaining your problem
+
+if you want to contribute by sending a pull request, feel free to do so, im open to all ideas!

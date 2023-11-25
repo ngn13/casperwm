@@ -1,0 +1,207 @@
+; #################################
+; ## DEFAULT CONFIG FOR CASPERWM ##
+; #################################
+
+[general]
+; set to false if you dont want debug output
+debug = false 
+
+; mod key
+mod = mod4 
+
+; window margins
+margin = 10
+
+; your bar of choice (yes it will be autolaunched)
+bar = polybar
+
+; workspace count
+workspaces = 9
+
+; window border colors and width
+border_active = #ffffff
+border_inactive = #808080
+border_width = 2
+
+; float movement/resize step
+float_step = 20
+
+; ###############
+; ## MAIN KEYS ##
+; ###############
+
+; quit the window manager
+[bind-quit]
+key = q 
+mod = shift
+action = quit
+
+; focus to next window 
+[bind-focus]
+key = Tab 
+action = focus 
+
+; launch a terminal
+[bind-term]
+key = Return 
+action = launch 
+argument = alacritty
+
+; launch rofi 
+[bind-rofi]
+key = p 
+action = launch 
+argument = rofi -show run -theme default -font 'JetBrains Mono 14' 
+
+; close the active window
+[bind-close]
+key = c 
+mod = shift
+action = close 
+
+; #######################
+; ## FLOAT WINDOW KEYS ##
+; #######################
+
+; toggle float for active window
+[bind-toggle-float]
+key = v
+action = float
+
+; shrink the float window 
+[bind-shrink-float]
+key = j
+action = resize
+argument = shrink
+
+; grow the float window 
+[bind-grow-float]
+key = k
+action = resize
+argument = grow 
+
+; move float window up 
+[bind-move-up-float]
+key = w
+action = move 
+argument = up 
+
+; move float window down 
+[bind-move-down-float]
+key = s
+action = move 
+argument = down 
+
+; move float window right 
+[bind-move-right-float]
+key = d
+action = move 
+argument = right 
+
+; move float window left 
+[bind-move-left-float]
+key = a
+action = move 
+argument = left 
+
+; ####################
+; ## WORKSPACE KEYS ##
+; ####################
+[bind-workspace1]
+key = 1
+action = workspace 
+argument = 1 
+
+[bind-workspace2]
+key = 2
+action = workspace 
+argument = 2 
+
+[bind-workspace3]
+key = 3
+action = workspace 
+argument = 3 
+
+[bind-workspace4]
+key = 4
+action = workspace 
+argument = 4 
+
+[bind-workspace5]
+key = 5
+action = workspace 
+argument = 5 
+
+[bind-workspace6]
+key = 6
+action = workspace 
+argument = 6 
+
+[bind-workspace7]
+key = 7
+action = workspace 
+argument = 7 
+
+[bind-workspace8]
+key = 8
+action = workspace 
+argument = 8 
+
+[bind-workspace9]
+key = 9
+action = workspace 
+argument = 9
+
+[bind-send-workspace1]
+key = 1
+mod = shift
+action = send 
+argument = 1 
+
+[bind-send-workspace2]
+key = 2
+mod = shift
+action = send 
+argument = 2 
+
+[bind-send-workspace3]
+key = 3
+mod = shift
+action = send 
+argument = 3 
+
+[bind-send-workspace4]
+key = 4
+mod = shift
+action = send 
+argument = 4 
+
+[bind-send-workspace5]
+key = 5
+mod = shift
+action = send 
+argument = 5 
+
+[bind-send-workspace6]
+key = 6
+mod = shift
+action = send 
+argument = 6 
+
+[bind-send-workspace7]
+key = 7
+mod = shift
+action = send 
+argument = 7 
+
+[bind-send-workspace8]
+key = 8
+mod = shift
+action = send 
+argument = 8 
+
+[bind-send-workspace9]
+key = 9
+mod = shift
+action = send 
+argument = 9

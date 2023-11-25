@@ -1,34 +1,45 @@
-#include "log.h"
+#include <stdarg.h>
+#include <stdio.h>
+#include <time.h>
+
 #include "config.h"
-#include <stdlib.h>
-#include <stdbool.h>
 
-void out(const char* tag, const char* m){
-   time_t now;
-   time(&now);
-   struct tm * p = localtime(&now);
+void print(const char* tag, const char* msg, ...){
+  va_list args;
+  va_start(args, msg);
 
-   char s[1000];
-   strftime(s, sizeof s, "%H:%M:%S", p);
+  time_t now;
+  time(&now);
+  struct tm * p = localtime(&now);
 
-   printf("[%s] [%s]: %s\n", s, tag, m);
+  char s[1000];
+  strftime(s, sizeof s, "%H:%M:%S", p);
+
+  printf("[%s] [%s]: ", s, tag);
+  vprintf(msg, args);
+  printf("\n");
+  
+  va_end(args);
 }
 
-void info(const char* m){
-  out("INFO   ", m);
-}
-
-void success(const char* m){
-  out("SUCCESS", m);
-}
-
-void error(const char* m){
-  out("ERROR  ", m);
-  //exit(EXIT_FAILURE);
-}
-
-void debug(const char* m){
-  if(DEBUG){
-    out("DEBUG  ", m);
+void debug(const char* msg, ...) {
+  if(!cfg.debug) {
+    return;
   }
+
+  va_list args;
+  va_start(args, msg);
+
+  time_t now;
+  time(&now);
+  struct tm * p = localtime(&now);
+
+  char s[1000];
+  strftime(s, sizeof s, "%H:%M:%S", p);
+
+  printf("[%s] [DEBUG]: ", s);
+  vprintf(msg, args);
+  printf("\n");
+  
+  va_end(args);
 }
