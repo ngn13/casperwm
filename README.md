@@ -20,6 +20,7 @@ then you can clone the repository and build it with `make`:
 git clone https://github.com/ngn13/casperwm.git
 cd casperwm && make
 sudo make install
+make install_cfg
 ```
 after that you can run casperwm using your favorite display manager or with the `.xinitrc`
 script

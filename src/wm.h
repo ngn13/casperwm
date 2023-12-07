@@ -4,8 +4,9 @@
 #include <stdbool.h>
 
 #define DEAD 0
-#define UNMAPPED 1 
-#define MAPPED 2
+#define MAPPED 1
+#define UNMAPPED 2 
+#define UNMAPPED_SELF 3
 
 struct WM {
   Display* dp;

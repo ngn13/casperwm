@@ -75,6 +75,7 @@ void focus(Window w) {
     XConfigureWindow(wm.dp, w, CWBorderWidth, &(XWindowChanges){.border_width = cfg.border_width});
   }
   
+  debug("Focusing to %d from %d", wm.active, w);
   wm.active = w;
   XSetInputFocus(wm.dp, w, RevertToParent, CurrentTime);
   XRaiseWindow(wm.dp, w);
@@ -86,12 +87,13 @@ bool focus_next_window() {
   for(int i = 0; i < wm.windowc-1; i++) {
     if(wm.active == windows[i].w) {
       indx = i;
+      break;
     }
   }
 
-  for(;indx < wm.windowc-1; indx++) {
+  for(; indx < wm.windowc-1; indx++) {
     if( windows[indx].w != wm.active &&
-        windows[indx].state != DEAD &&
+        windows[indx].state == MAPPED &&
         windows[indx].workspace == wm.workspace) {
       focus(windows[indx].w);
       return true;
@@ -99,8 +101,8 @@ bool focus_next_window() {
   }
 
   for(int i = 0; i < wm.windowc-1; i++) {
-    if( windows[indx].w != wm.active &&
-        windows[i].state != DEAD &&
+    if( windows[i].w != wm.active &&
+        windows[i].state == MAPPED &&
         windows[i].workspace == wm.workspace) {
       focus(windows[i].w);
       return true;
@@ -166,8 +168,12 @@ bool add_window(Window w) {
   
   free(sh);
 
-  if(wm.windowc > 1) {
+  if(wm.windowc >= 1) {
     for(int i = 0; i < wm.windowc-1; i++) {
+      if(windows[i].w == w && windows[i].state == MAPPED) {
+        return false; 
+      }
+
       if(windows[i].state != DEAD) {
         continue;
       }
@@ -213,14 +219,15 @@ bool unmap_window(Window w) {
       focus(windows[i].w);
     }
 
-    else if(windows[i].w == w) {
-      windows[i].state = UNMAPPED;
+
+    else if(windows[i].w == w && windows[i].state != UNMAPPED) {
       debug("Unmapped window: %d", w);
-      resize_windows();
+      windows[i].state = UNMAPPED_SELF;
     }
   }
 
-  return false;
+  resize_windows();
+  return true;
 }
 
 void remap_all() {
